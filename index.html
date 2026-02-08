@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Question for Anj</title>
+    <style>
+        :root {
+            --pink: #ffafcc;
+            --hot-pink: #ff8fab;
+            --red: #fb6f92;
+            --white: #fff1f2;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--white);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        h1 {
+            color: var(--red);
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px white;
+        }
+
+        .gif-container img {
+            width: 200px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        #yesBtn {
+            background-color: var(--red);
+            color: white;
+            z-index: 100;
+        }
+
+        #noBtn {
+            background-color: #e0e0e0;
+            color: #666;
+        }
+
+        /* Success screen styles */
+        #success-msg {
+            display: none;
+        }
+
+        .heart-icon {
+            color: var(--red);
+            font-size: 50px;
+            animation: beat 0.8s infinite;
+        }
+
+        @keyframes beat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContainer">
+        <div class="gif-container">
+            <img src="https://media.tenor.com/QUFOQXsCouEAAAAj/pengu-pudgy.gif" alt="Cute hearts">
+        </div>
+        <h1 id="question">Will you be my Valentine, Anj? ❤️</h1>
+        <p style="color: var(--hot-pink); margin-bottom: 20px;">2 years down, forever to go, Adi!</p>
+        
+        <div class="buttons">
+            <button id="yesBtn" onclick="celebrate()">Yes</button>
+            <button id="noBtn" onclick="handleNo()">No</button>
+        </div>
+    </div>
+
+    <div class="container" id="success-msg">
+        <div class="heart-icon">❤️</div>
+        <h1 style="font-size: 3.5rem;">YAY! See you on the 14th, Adi!</h1>
+        <p>You made me the happiest person alive (again)!</p>
+        <img src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyb3o4a2M0dXQxZGpreHBudmhzNm1xdG5neXJjZGFxamthOXUwcHRxayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/W4CUPPZXF3ejpZkQag/200.gif" width="200">
+    </div>
+
+    <script>
+        let noCount = 0;
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const question = document.getElementById('question');
+
+        const phrases = [
+            "No",
+            "Are you sure?",
+            "Really sure, Adi?",
+            "Think again, Anj!",
+            "Last chance...",
+            "Surely not?",
+            "You're breaking my heart ;(",
+            "I'm gonna cry...",
+            "Anj, please?",
+            "CLICK YES!"
+        ];
+
+        function handleNo() {
+            noCount++;
+            
+            // 1. Change the "No" button text
+            const phraseIndex = Math.min(noCount, phrases.length - 1);
+            noBtn.innerText = phrases[phraseIndex];
+
+            // 2. Make the "Yes" button bigger
+            const currentSize = 1.2 + (noCount * 0.5); // Grow by 0.5 units each click
+            yesBtn.style.fontSize = `${currentSize}rem`;
+            yesBtn.style.padding = `${15 + (noCount * 10)}px ${30 + (noCount * 20)}px`;
+
+            // 3. Move the "No" button randomly to make it harder to click
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.position = "absolute";
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+
+            // 4. Hide No button if Yes is too big
+            if (noCount > 8) {
+                noBtn.style.display = 'none';
+                yesBtn.style.width = '100vw';
+                yesBtn.style.height = '100vh';
+                yesBtn.style.position = 'fixed';
+                yesBtn.style.top = '0';
+                yesBtn.style.left = '0';
+                yesBtn.style.borderRadius = '0';
+            }
+        }
+
+        function celebrate() {
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('success-msg').style.display = 'block';
+            document.body.style.backgroundColor = "#ffafcc";
+            
+            // Trigger some console love
+            console.log("She said YES! Happy Valentine's, Adi!");
+        }
+    </script>
+</body>
+</html>
